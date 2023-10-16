@@ -1,0 +1,14 @@
+#!/bin/bash
+
+output_file="makefile"
+source_files=($(ls *.c 2>/dev/null | sed 's/\.c$//'))
+cat > "$output_file" << EOF
+# definizione del compilatore e dei flag di compilazione
+# che vengono usate dalle regole implicite
+CC=gcc
+CFLAGS=-std=c11 -Wall -O -g
+LDLIBS=-lm
+
+all: ${source_files[@]}
+
+echo "Created $output_file."

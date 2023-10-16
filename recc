@@ -1,0 +1,10 @@
+#!/bin/bash
+
+clear
+cd ~/Recs
+osascript -e 'tell application "Terminal" to set miniaturized of every window to true'
+#undot &
+sox -d "$(date).mp3"
+killall undot
+osascript -e 'tell application "Terminal" to set miniaturized of every window to true'
+clear

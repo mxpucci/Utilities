@@ -1,0 +1,15 @@
+#!/bin/bash
+
+max_bitrate=1572864
+
+clear
+for filename in *.mov; do
+    bitrate=$(ffprobe -v error -select_streams v:0 -show_entries stream=bit_rate -of default=noprint_wrappers=1:nokey=1 "$filename")
+    
+    if [ "$bitrate" -gt "$max_bitrate" ]; then
+        bitrate="$max_bitrate"
+    fi
+    new_filename="${filename%.*}.mp4"
+    ffmpeg -i "$filename" -c:v h264_videotoolbox -b:v $bitrate "$new_filename"    
+done
+mv *.mov ~/.Trash

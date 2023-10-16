@@ -1,0 +1,9 @@
+#!/bin/bash
+while true
+do
+	clear
+	read -s name
+	pbcopy < $HOME/$name	
+done
+osascript -e 'tell application "Terminal" to set miniaturized of every window to true'
+clear

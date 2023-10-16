@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+sudo codesign --remove-signature /Applications/Discord\ 
+Canary.app/Contents/Frameworks/Discord\ Canary\ Helper\ \(Renderer\).app 
+
+sudo codesign -s - /Applications/Discord\ 
+Canary.app/Contents/Frameworks/Discord\ Canary\ Helper\ \(Renderer\).app         
+

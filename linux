@@ -1,0 +1,6 @@
+#!/bin/bash
+
+/Applications/UTM.app/Contents/MacOS/utmctl start Linux;
+osascript -e 'tell application "UTM" to set visible of front window to false';
+sleep 70s &> /dev/null
+ssh michelangelo@192.168.65.2;
