@@ -11,4 +11,6 @@ LDLIBS=-lm
 
 all: ${source_files[@]}
 
+EOF
+
 echo "Created $output_file."
