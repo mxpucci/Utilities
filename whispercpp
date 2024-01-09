@@ -1,13 +1,16 @@
 directory=$(dirname "$1")
 file="$directory/output.wav"
-out_file="$directory/output.wav.txt"
+out_file=$(realpath "$1")
 ffmpeg -i "$1" -ar 16000 "$file"
 
 file=$(realpath output.wav)
 
+
+echo $out_file
+
 cd ~/Tools/whisper.cpp-master
-./main -m models/ggml-large.bin --language it -f "$file" --output-txt
-tr '\n' ' ' < $out_file > output.txt
+./main -m models/ggml-large.bin --language it -f "$file" --output-txt -of "${out_file}_tmp"
+tr '\n' ' ' < "${out_file}_tmp.txt" > "${out_file}.txt"
 
 rm -r "$file"
-#rm -r "$file.txt"
+rm -r "{out_file}_tmp.txt"

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+output_file="$1.s"
+source_files=($(ls *.c 2>/dev/null | sed 's/\.c$//'))
+cat > "$output_file" << EOF
+.text
+.global $1
+.type $1, %function
+
+$1:
+
+
+EOF
+
+echo "Created $output_file."
