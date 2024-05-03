@@ -1,15 +1,4 @@
 #!/bin/bash
 
 mv -v ~/Library/Application\ Support/.ffuserdata ~/.Trash
-osascript -e "set Volume 0"
 
-#cd '/Users/michelangelopucci/Movies/Untitled 1.fcpbundle/10-02-22/Shared Items'
-#rm -rf *
-#cd '/Users/michelangelopucci/Movies/Untitled 1.fcpbundle/10-02-22/Render Files/Thumbnail Media'
-#rm -rf *
-#cd '/Users/michelangelopucci/Movies/Untitled 1.fcpbundle/10-02-22/Render Files/Peaks Data'
-#rm -rf *
-#cd '/Users/michelangelopucci/Movies/Untitled 1.fcpbundle/10-02-22/Render Files/High Quality Media'
-#rm -rf *
-#cd '/Users/michelangelopucci/Movies/Untitled 1.fcpbundle/10-02-22/Original Media'
-#rm -rf *

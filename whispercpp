@@ -1,16 +1,55 @@
-directory=$(dirname "$1")
-file="$directory/output.wav"
-out_file=$(realpath "$1")
-ffmpeg -i "$1" -ar 16000 "$file"
-
-file=$(realpath output.wav)
+#!/bin/bash
 
 
-echo $out_file
+# Check if at least one argument is provided
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <input_file1> [input_file2] ... [input_fileN]"
+    exit 1
+fi
 
-cd ~/Tools/whisper.cpp-master
-./main -m models/ggml-large.bin --language it -f "$file" --output-txt -of "${out_file}_tmp"
-tr '\n' ' ' < "${out_file}_tmp.txt" > "${out_file}.txt"
+whisper_dir="$HOME/Tools/whisper.cpp-master"
+whisper_executable="${whisper_dir}/main"
 
-rm -r "$file"
-rm -r "{out_file}_tmp.txt"
+
+for input_file in "$@"; do
+
+    # Ensure the input file exists
+    if [ ! -f "$input_file" ]; then
+        echo "Error: File '$input_file' not found."
+        continue  # Skip to next file
+    fi
+
+    # Get the absolute path of the input file
+    input_file_abs="$(realpath "$input_file")"
+
+    # Extract the file name without its suffix and directory
+    filename=$(basename "$input_file_abs" .txt)  # Assuming input files are `.txt`, adjust extension as necessary
+
+    # Get directory of the input file
+    directory=$(dirname "$input_file_abs")
+
+    # Define file paths
+    wav_file="$directory/${filename}.wav"
+    whisper_out_tmp="$directory/${filename}_tmp"
+    final_out_file="$directory/${filename}.txt"
+    
+    # Remove the existing WAV file if it exists to prevent ffmpeg from asking to overwrite
+    if [ -f "$wav_file" ]; then
+    rm -f "$wav_file"
+    fi
+
+    # Convert input file to WAV with a 16 kHz sample rate using ffmpeg
+    ffmpeg -i "$input_file_abs" -ar 16000 "$wav_file"
+
+    # Run whisper.cpp transcribing the wav_file, using the Italian language model
+    "${whisper_executable}" -m "${whisper_dir}/models/ggml-large.bin" --language it -f "$wav_file" --output-txt -of "${whisper_out_tmp}"
+
+    # Replace newlines with spaces and create the final output file
+    tr '\n' ' ' < "${whisper_out_tmp}.txt" > "${final_out_file}"
+
+    # Cleanup temporary files including the WAV file
+    rm -f "$wav_file"
+    rm -f "${whisper_out_tmp}.txt"
+
+    echo "Transcription completed: ${final_out_file}"
+done

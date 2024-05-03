@@ -7,6 +7,10 @@ if [ -n "$1" ] && [ "$1" = "x86" ]; then
 	sleep 70s &> /dev/null
 	ssh michelangelo@192.168.65.2;
 else
-	vmrun -T fusion start /Users/michelangelopucci/Virtual\ Machines.localized/Ubuntu\ 64-bit\ Arm\ 22.04.3.vmwarevm/Ubuntu\ 64-bit\ Arm\ 22.04.3.vmx
+	if ! vmrun list | grep -q "/Users/michelangelopucci/Virtual\ Machines.localized/Ubuntu\ 64-bit\ Arm\ 22.04.3.vmwarevm/Ubuntu\ 64-bit\ Arm\ 22.04.3.vmx"; then
+    	vmrun -T fusion start /Users/michelangelopucci/Virtual\ Machines.localized/Ubuntu\ 64-bit\ Arm\ 22.04.3.vmwarevm/Ubuntu\ 64-bit\ Arm\ 22.04.3.vmx
+		sleep 10s &> /dev/null
+	fi
+
 	ssh michelangelo@192.168.236.131
 fi
